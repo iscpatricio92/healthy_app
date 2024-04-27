@@ -13,7 +13,6 @@ const Input = ({
   customClass,
   ...rest
 }) => {
-  console.log(rest?.options);
   switch (type) {
     case "text":
     case "password":
