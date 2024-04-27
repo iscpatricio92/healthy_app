@@ -15,10 +15,10 @@ export default function Header({
           src="https://ik.imagekit.io/pibjyepn7p9/Lilac_Navy_Simple_Line_Business_Logo_CGktk8RHK.png?ik-sdk-version=javascript-1.4.3&updatedAt=1649962071315"
         />
       </div>
-      <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+      <h1 className="mt-3 text-center py-1 text-4xl font-extrabold text-gray-900">
         {heading}
-      </h2>
-      <p className="mt-2 text-center text-sm text-gray-600 mt-5">
+      </h1>
+      <p className="text-center text-sm text-gray-600 mt-3">
         {paragraph}{" "}
         <Link
           to={linkUrl}
