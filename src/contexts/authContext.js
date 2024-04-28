@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoggedIn(true);
   };
   const logout = () => {
-    // Aquí puedes implementar la lógica de cierre de sesión, como limpiar las cookies o el almacenamiento local
+    console.log("LOGOUT");
     setIsLoggedIn(false);
     localStorage.removeItem(api.key);
   };
@@ -54,12 +54,15 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem(api.key);
     return token;
   };
+  const isTokenExpired = (token) =>
+    Date.now() >= JSON.parse(atob(token.split(".")[1])).exp * 1000;
 
   useEffect(() => {
-    // Verificar si hay un token almacenado en localStorage al cargar la aplicación
-    const token = localStorage.getItem(api.key);
-    if (token) {
+    const token = getToken();
+    if (token && !isTokenExpired(token)) {
       setIsLoggedIn(true);
+    } else {
+      logout();
     }
   }, []);
 
@@ -81,11 +84,11 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useTokenValidation = () => {
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, getToken, isTokenExpired } = useAuth();
   useEffect(() => {
-    const token = localStorage.getItem(api.key);
+    const token = getToken();
 
-    if (isLoggedIn && !token) {
+    if (isLoggedIn && isTokenExpired(token)) {
       console.warn("Token inválido. Cerrando sesión.");
       logout();
     }
