@@ -3,51 +3,33 @@ import { loginFields } from "../constants/formFields";
 import Input from "./Input";
 import FormExtra from "./FormExtra";
 import FormAction from "./FormAction";
-import postLogin from "../data/users";
-import { SUCCESS, ERROR } from "../constants/status";
-import api from "../api/index";
-import { useQuery, useQueryClient } from "react-query";
-import { usePostLogin } from "../hook/useUser";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/authContext";
 
 const fields = loginFields;
 let fieldsState = {};
 //fields.forEach((field) => fieldsState[(field.id = "")]);
 
 const LoginComponent = () => {
-  const queryClient = new useQueryClient();
+  const {
+    isLoggedIn,
+    login,
+    logout,
+    submitRemember,
+    validateEmail,
+    setRememberMe,
+  } = useAuth();
+
   const [loginState, setLoginState] = useState(fieldsState);
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
-  const [passVisible, setPassVisible] = useState(false);
-  const [authError, setAuthError] = useState(false);
-  const [token, setToken_] = useState(localStorage.getItem("healthyToken"));
 
-  const validateEmail = (mail) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(mail);
-  };
+  //const [token, setToken_] = useState(localStorage.getItem("healthyToken"));
+  const navigate = useNavigate();
 
-  const validateRemember = () => {
-    const emailRemember = localStorage.getItem("remember");
-    if (emailRemember && emailRemember !== "" && validateEmail(emailRemember)) {
-      setEmail(emailRemember);
-      setRememberMe(true);
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/dashboard");
     }
-  };
-
-  const setToken = (token, value) => {
-    localStorage.setItem(token, value);
-  };
-
-  const submitRemember = (mail) => {
-    const emailRemember = localStorage.getItem("remember");
-    if (rememberMe) {
-      localStorage.setItem("remember", mail);
-    } else if (!validateEmail(emailRemember) || emailRemember === email) {
-      localStorage.removeItem("remember");
-    }
-  };
+  }, [isLoggedIn]);
 
   useEffect(() => {
     validateRemember();
@@ -55,59 +37,37 @@ const LoginComponent = () => {
 
   useEffect(() => {
     const mail = localStorage.getItem("remember");
-    setRememberMe(!(email !== mail));
-  }, [email]);
+    setRememberMe(!(loginState.email !== mail));
+  }, [loginState.email]);
+
+  const validateRemember = () => {
+    const emailRemember = localStorage.getItem("rememberMeHealthy");
+    if (emailRemember && emailRemember !== "" && validateEmail(emailRemember)) {
+      setLoginState({ email: emailRemember });
+      setRememberMe(true);
+    }
+  };
 
   const handleChange = (e) => {
     setLoginState({ ...loginState, [e.target.id]: e.target.value });
-    if (e.target.id === "email") setEmail(e.target.value);
-    if (e.target.id === "password") setPassword(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    authenticateUser(e);
-  };
-  const isLoginFormComplete = (data) => {
-    const { email: e, password: p, confirmPassword } = data;
-    return !!(e && p) || !!(p && confirmPassword);
+    authenticateUser();
   };
 
-  const authenticateUser = async (e) => {
+  const handleRemember = (e) => {
+    const check = e.target.checked;
+    submitRemember(check, loginState.email);
+  };
+
+  const authenticateUser = async () => {
     const data = {
-      email: "isc.patricio@gmail.com",
-      password: "password-pat",
+      email: loginState.email,
+      password: loginState.password,
     };
-
-    try {
-      const { status, result, statusCode } = await postLogin(data);
-      if (status && result?.accessToken) {
-        setToken(api.key, result.accessToken);
-      } else {
-        console.log("ERROR", e);
-        setAuthError(true);
-      }
-    } catch (e) {
-      console.log("ERRORs", e);
-      setAuthError(true);
-    }
-
-    /*
-    try {
-      const { response } = await postLogin(data);
-      console.log("VIEW", response);
-      /*if (statusCode) {
-        //const { updatedPassword, businessId, token, id: userId } = user;
-        submitRemember(email);
-        setToken(api.key, statusCode);
-      } else {
-        console.log("ERROR", e);
-        setAuthError(true);
-      }
-    } catch (e) {
-      console.log("ERRORs", e);
-      setAuthError(true);
-    }*/
+    login(data);
   };
 
   const extraForm = [
@@ -138,7 +98,7 @@ const LoginComponent = () => {
       </div>
 
       <FormAction text="Login" handleSubmit={handleSubmit} />
-      <FormExtra data={extraForm} />
+      <FormExtra data={extraForm} handleRemember={handleRemember} />
     </form>
   );
 };

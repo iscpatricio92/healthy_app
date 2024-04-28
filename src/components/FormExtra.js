@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const FormExtra = ({ isRemember = true, data }) => {
+const FormExtra = ({ isRemember = true, data, handleRemember }) => {
   return (
     <>
       <div className="flex items-center justify-between mt-1">
@@ -10,6 +10,7 @@ const FormExtra = ({ isRemember = true, data }) => {
               id="remember-me"
               name="remember-me"
               type="checkbox"
+              onChange={handleRemember}
               className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
             />
             <label
