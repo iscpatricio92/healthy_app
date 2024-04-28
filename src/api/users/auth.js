@@ -8,5 +8,12 @@ const auth = {
     postHeader.body = JSON.stringify(data);
     return fetch(url, postHeader);
   },
+
+  logout(token) {
+    const url = `${API_HEALTHY}/api/auth/logout`;
+    postHeader.headers.authorization = token;
+    //postHeader.body = JSON.stringify(data);
+    return fetch(url, postHeader);
+  },
 };
-export { auth };
+export default auth;

@@ -21,6 +21,7 @@ const LoginComponent = () => {
   } = useAuth();
 
   const [loginState, setLoginState] = useState(fieldsState);
+  //const [rememberMe,setRememberMe]=useState(false)
 
   //const [token, setToken_] = useState(localStorage.getItem("healthyToken"));
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const LoginComponent = () => {
   }, []);
 
   useEffect(() => {
-    const mail = localStorage.getItem("remember");
+    const mail = localStorage.getItem("rememberMeHealthy");
     setRememberMe(!(loginState.email !== mail));
   }, [loginState.email]);
 
@@ -65,7 +66,7 @@ const LoginComponent = () => {
   const authenticateUser = async () => {
     const data = {
       email: loginState.email,
-      password: loginState.password,
+      password: "password-pat",
     };
     login(data);
   };

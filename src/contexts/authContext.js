@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-import postLogin from "../data/users";
+import postLogin from "../data/auth";
 import api from "../api/index";
 
 const AuthContext = createContext();
@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [authError, setAuthError] = useState(false);
+
   const validateEmail = (mail) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(mail);
@@ -28,11 +29,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (data) => {
-    console.log("HOOK", data);
     try {
       const { status, result, statusCode } = await postLogin(data);
       if (status && result?.accessToken) {
-        await submitRemember(data.email);
+        //await submitRemember(data.email);
         await setToken(api.key, result.accessToken);
       } else {
         console.log("ERROR");
@@ -48,6 +48,11 @@ export const AuthProvider = ({ children }) => {
     // Aquí puedes implementar la lógica de cierre de sesión, como limpiar las cookies o el almacenamiento local
     setIsLoggedIn(false);
     localStorage.removeItem(api.key);
+  };
+
+  const getToken = () => {
+    const token = localStorage.getItem(api.key);
+    return token;
   };
 
   useEffect(() => {
@@ -67,6 +72,7 @@ export const AuthProvider = ({ children }) => {
         submitRemember,
         validateEmail,
         setRememberMe,
+        getToken,
       }}
     >
       {children}

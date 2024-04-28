@@ -5,4 +5,10 @@ const postLogin = async (payload) => {
   return data.json();
 };
 
+export const postLogout = async (token) => {
+  const response = apiV1.auth.logout(token);
+  const data = await response;
+  return data.json();
+};
+
 export default postLogin;
