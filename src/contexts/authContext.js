@@ -34,6 +34,7 @@ export const AuthProvider = ({ children }) => {
       if (status && result?.accessToken) {
         //await submitRemember(data.email);
         await setToken(api.key, result.accessToken);
+        setIsLoggedIn(true);
       } else {
         console.log("ERROR");
         setAuthError(true);
@@ -42,7 +43,6 @@ export const AuthProvider = ({ children }) => {
       console.log("ERRORs", e);
       setAuthError(true);
     }
-    setIsLoggedIn(true);
   };
   const logout = () => {
     console.log("LOGOUT");
