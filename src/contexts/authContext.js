@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-
+import { jwtDecode } from "jwt-decode";
 import postLogin from "../data/auth";
 import api from "../api/index";
 
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
         await setToken(api.key, result.accessToken);
         setIsLoggedIn(true);
       } else {
-        console.log("ERROR");
+        console.log("ERROR", statusCode);
         setAuthError(true);
       }
     } catch (e) {
@@ -47,19 +47,28 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     console.log("LOGOUT");
     setIsLoggedIn(false);
-    localStorage.removeItem(api.key);
+    window.localStorage.removeItem(api.key);
   };
 
   const getToken = () => {
     const token = localStorage.getItem(api.key);
     return token;
   };
-  const isTokenExpired = (token) =>
-    Date.now() >= JSON.parse(atob(token.split(".")[1])).exp * 1000;
+  const isTokenValid = () => {
+    const token = localStorage.getItem(api.key);
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const expirationDate = new Date(decodedToken.exp * 1000);
+      const currentDate = new Date();
+      return expirationDate > currentDate;
+    }
+    return false;
+  };
 
   useEffect(() => {
-    const token = getToken();
-    if (token && !isTokenExpired(token)) {
+    const token = localStorage.getItem(api.key);
+    const isValid = isTokenValid();
+    if (token && isValid) {
       setIsLoggedIn(true);
     } else {
       logout();
@@ -76,23 +85,12 @@ export const AuthProvider = ({ children }) => {
         validateEmail,
         setRememberMe,
         getToken,
+        isTokenValid,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useTokenValidation = () => {
-  const { isLoggedIn, logout, getToken, isTokenExpired } = useAuth();
-  useEffect(() => {
-    const token = getToken();
-
-    if (isLoggedIn && isTokenExpired(token)) {
-      console.warn("Token inválido. Cerrando sesión.");
-      logout();
-    }
-  });
 };
 
 export const useAuth = () => useContext(AuthContext);

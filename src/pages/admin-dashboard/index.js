@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { useTokenValidation, useAuth } from "../../contexts/authContext";
+import { useAuth } from "../../contexts/authContext";
 import { getUserInfo } from "../../data/user";
 const DashboardPage = () => {
   const { getToken, logout } = useAuth(null);
   const [user, setUser] = useState(null);
-  //useTokenValidation();
 
   useEffect(() => {
     const fetchUser = async () => {

@@ -28,7 +28,7 @@ const LoginComponent = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate("/dashboard");
+      navigate("/app/dashboard");
     }
   }, [isLoggedIn]);
 
@@ -73,7 +73,7 @@ const LoginComponent = () => {
 
   const extraForm = [
     {
-      link: "/recovery",
+      link: "/forgot-password",
       linkText: "Forgot password?",
       text: "",
     },
