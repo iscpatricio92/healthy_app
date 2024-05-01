@@ -1,6 +1,6 @@
 import React from "react";
 //import loginImg from "../../assets/healthcare-security.jpeg";
-import Header from "../../components/Header";
+import Header from "../../components/LoginHeader/Header";
 import LoginComponent from "../../components/Login";
 const LoginPage = () => {
   return (

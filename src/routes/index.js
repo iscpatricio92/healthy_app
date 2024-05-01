@@ -1,38 +1,25 @@
-import { useAuth } from "../contexts/authContext";
-import { lazy } from "react";
 import NotFound from "../pages/NotFound";
-const { BrowserRouter, Routes, Route, Navigate } = require("react-router-dom");
+import DashboardPage from "../pages/admin-dashboard";
+import LoginPage from "../pages/Login";
+import PrivateRoute from "./PrivateRoute";
+import AnonymousRoute from "./AnonymousRoute";
 
-const LoginPage = lazy(() => import("../pages/Login"));
-const RecoveryPage = lazy(() => import("../pages/Recovery"));
-const DashboardPage = lazy(() => import("../pages/admin-dashboard"));
-const SignupPage = lazy(() => import("../pages/Signup"));
-const Layout = lazy(() => import("../containers/Layout"));
+import Layout from "../containers/Layout";
+
+const { Routes, Route } = require("react-router-dom");
 
 const RoutesComponent = () => {
   return (
-    <BrowserRouter>
-      <Routes>
+    <Routes>
+      <Route element={<PrivateRoute />}>
+        <Route path="/" element={<Layout element={<DashboardPage />} />} />
+      </Route>
+      <Route element={<AnonymousRoute />}>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/forgot-password" element={<RecoveryPage />} />
-        <Route
-          path="/app/dashboard"
-          element={<PrivateRoute element={<DashboardPage />} />}
-        />
-        {/*<Route path="*" element={<Navigate to="/login" />} /> */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+      </Route>
+      {/*<Route path="*" element={<Navigate to="/login" />} /> */}
+    </Routes>
   );
 };
-const PrivateRoute = ({ element }) => {
-  const { isLoggedIn } = useAuth();
-  console.log("PRIVATE", isLoggedIn);
-  return isLoggedIn ? (
-    <Layout element={element} />
-  ) : (
-    <Navigate to="/login" replace />
-  );
-};
+
 export default RoutesComponent;

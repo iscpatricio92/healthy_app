@@ -1,4 +1,4 @@
-import Header from "../../components/Header";
+import Header from "../../components/LoginHeader/Header";
 import RecoveryComponent from "../../components/Recovery";
 
 export default function RecoveryPage() {

@@ -1,7 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
+
 import postLogin from "../data/auth";
 import api from "../api/index";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -9,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [authError, setAuthError] = useState(false);
+  const navigate = useNavigate();
 
   const validateEmail = (mail) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -35,6 +38,7 @@ export const AuthProvider = ({ children }) => {
         //await submitRemember(data.email);
         await setToken(api.key, result.accessToken);
         setIsLoggedIn(true);
+        navigate("/");
       } else {
         console.log("ERROR", statusCode);
         setAuthError(true);
@@ -48,13 +52,9 @@ export const AuthProvider = ({ children }) => {
     console.log("LOGOUT");
     setIsLoggedIn(false);
     window.localStorage.removeItem(api.key);
+    navigate("/login");
   };
-
-  const getToken = () => {
-    const token = localStorage.getItem(api.key);
-    return token;
-  };
-  const isTokenValid = () => {
+  const isTokenValid = async () => {
     const token = localStorage.getItem(api.key);
     if (token) {
       const decodedToken = jwtDecode(token);
@@ -65,20 +65,14 @@ export const AuthProvider = ({ children }) => {
     return false;
   };
 
-  useEffect(() => {
+  const getToken = () => {
     const token = localStorage.getItem(api.key);
-    const isValid = isTokenValid();
-    if (token && isValid) {
-      setIsLoggedIn(true);
-    } else {
-      logout();
-    }
-  }, []);
+    return token;
+  };
 
   return (
     <AuthContext.Provider
       value={{
-        isLoggedIn,
         login,
         logout,
         submitRemember,

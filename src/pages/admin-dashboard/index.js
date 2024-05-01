@@ -22,8 +22,8 @@ const DashboardPage = () => {
 
   return (
     <div className="flex flex-col">
-      <button className="bg-gray-500 h-3 w-10" onClick={logout}>
-        Hola
+      <button className="bg-gray-500 h-3 " onClick={logout}>
+        Cerrar sesión
       </button>
       {user ? (
         <div>

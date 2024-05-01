@@ -3,7 +3,7 @@ import { loginFields } from "../constants/formFields";
 import Input from "./Input";
 import FormExtra from "./FormExtra";
 import FormAction from "./FormAction";
-import { useNavigate } from "react-router-dom";
+
 import { useAuth } from "../contexts/authContext";
 
 const fields = loginFields;
@@ -11,26 +11,13 @@ let fieldsState = {};
 //fields.forEach((field) => fieldsState[(field.id = "")]);
 
 const LoginComponent = () => {
-  const {
-    isLoggedIn,
-    login,
-    logout,
-    submitRemember,
-    validateEmail,
-    setRememberMe,
-  } = useAuth();
+  const { login, logout, submitRemember, validateEmail, setRememberMe } =
+    useAuth();
 
   const [loginState, setLoginState] = useState(fieldsState);
   //const [rememberMe,setRememberMe]=useState(false)
 
   //const [token, setToken_] = useState(localStorage.getItem("healthyToken"));
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate("/app/dashboard");
-    }
-  }, [isLoggedIn]);
 
   useEffect(() => {
     validateRemember();
@@ -46,6 +33,7 @@ const LoginComponent = () => {
     if (emailRemember && emailRemember !== "" && validateEmail(emailRemember)) {
       setLoginState({ email: emailRemember });
       setRememberMe(true);
+      //TODO recover the information from the checkbox, to validate if there is mail in localstorage it must be checked
     }
   };
 
