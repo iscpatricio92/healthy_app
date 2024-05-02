@@ -1,28 +1,25 @@
-import SignupPage from "../pages/Signup";
-import LoginPage from "../pages/Login";
-import RecoveryPage from "../pages/Recovery";
+import NotFound from "../pages/NotFound";
 import DashboardPage from "../pages/admin-dashboard";
-import RequiredAuth from "../hook/RequiredAuth";
-const { BrowserRouter, Routes, Route, Navigate } = require("react-router-dom");
+import LoginPage from "../pages/Login";
+import PrivateRoute from "./PrivateRoute";
+import AnonymousRoute from "./AnonymousRoute";
+
+import Layout from "../pages/containers/Layout";
+
+const { Routes, Route } = require("react-router-dom");
 
 const RoutesComponent = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/dashboard"
-          element={
-            <RequiredAuth>
-              <DashboardPage />
-            </RequiredAuth>
-          }
-        ></Route>
+    <Routes>
+      <Route element={<PrivateRoute />}>
+        <Route path="/" element={<Layout element={<DashboardPage />} />} />
+      </Route>
+      <Route element={<AnonymousRoute />}>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/recovery" element={<RecoveryPage />} />
-        <Route path="*" element={<Navigate to="/dashboard" />} />
-      </Routes>
-    </BrowserRouter>
+      </Route>
+      {/*<Route path="*" element={<Navigate to="/login" />} /> */}
+    </Routes>
   );
 };
+
 export default RoutesComponent;
