@@ -2,6 +2,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import postLogin from "../data/auth";
 import api from "../api/index";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -9,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [authError, setAuthError] = useState(false);
+  const navigate = useNavigate();
 
   const validateEmail = (mail) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -34,65 +37,54 @@ export const AuthProvider = ({ children }) => {
       if (status && result?.accessToken) {
         //await submitRemember(data.email);
         await setToken(api.key, result.accessToken);
+        setIsLoggedIn(true);
+        navigate("/");
       } else {
-        console.log("ERROR");
+        console.log("ERROR", statusCode);
         setAuthError(true);
       }
     } catch (e) {
       console.log("ERRORs", e);
       setAuthError(true);
     }
-    setIsLoggedIn(true);
   };
   const logout = () => {
     console.log("LOGOUT");
     setIsLoggedIn(false);
-    localStorage.removeItem(api.key);
+    window.localStorage.removeItem(api.key);
+    navigate("/login");
+  };
+  const isTokenValid = async () => {
+    const token = localStorage.getItem(api.key);
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const expirationDate = new Date(decodedToken.exp * 1000);
+      const currentDate = new Date();
+      return expirationDate > currentDate;
+    }
+    return false;
   };
 
   const getToken = () => {
     const token = localStorage.getItem(api.key);
     return token;
   };
-  const isTokenExpired = (token) =>
-    Date.now() >= JSON.parse(atob(token.split(".")[1])).exp * 1000;
-
-  useEffect(() => {
-    const token = getToken();
-    if (token && !isTokenExpired(token)) {
-      setIsLoggedIn(true);
-    } else {
-      logout();
-    }
-  }, []);
 
   return (
     <AuthContext.Provider
       value={{
-        isLoggedIn,
         login,
         logout,
         submitRemember,
         validateEmail,
         setRememberMe,
         getToken,
+        isTokenValid,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useTokenValidation = () => {
-  const { isLoggedIn, logout, getToken, isTokenExpired } = useAuth();
-  useEffect(() => {
-    const token = getToken();
-
-    if (isLoggedIn && isTokenExpired(token)) {
-      console.warn("Token inválido. Cerrando sesión.");
-      logout();
-    }
-  });
 };
 
 export const useAuth = () => useContext(AuthContext);

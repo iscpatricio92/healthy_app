@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
-import { useTokenValidation, useAuth } from "../../contexts/authContext";
+import { useAuth } from "../../contexts/authContext";
 import { getUserInfo } from "../../data/user";
 const DashboardPage = () => {
   const { getToken, logout } = useAuth(null);
   const [user, setUser] = useState(null);
-  //useTokenValidation();
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const token = getToken();
         const response = await getUserInfo(token);
-        console.log(response);
         setUser(response?.result);
       } catch (e) {
         console.error("Error al obtener información del usuario:", e);
@@ -23,8 +21,8 @@ const DashboardPage = () => {
 
   return (
     <div className="flex flex-col">
-      <button className="bg-gray-500 h-3 w-10" onClick={logout}>
-        Hola
+      <button className="bg-gray-500 h-3 " onClick={logout}>
+        Cerrar sesión
       </button>
       {user ? (
         <div>
