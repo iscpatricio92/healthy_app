@@ -4,7 +4,7 @@ import LoginPage from "../pages/Login";
 import PrivateRoute from "./PrivateRoute";
 import AnonymousRoute from "./AnonymousRoute";
 
-import Layout from "../containers/Layout";
+import Layout from "../pages/containers/Layout";
 
 const { Routes, Route } = require("react-router-dom");
 

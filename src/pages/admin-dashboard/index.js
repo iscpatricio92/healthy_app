@@ -10,7 +10,6 @@ const DashboardPage = () => {
       try {
         const token = getToken();
         const response = await getUserInfo(token);
-        console.log(response);
         setUser(response?.result);
       } catch (e) {
         console.error("Error al obtener información del usuario:", e);
