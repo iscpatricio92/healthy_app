@@ -1,0 +1,12 @@
+##WIP
+version: "3.8"
+
+services:
+  healthy_app:
+    container_name: healthy_app-prod-c
+    image: docker-react-app-image
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+        - "8080:80"
