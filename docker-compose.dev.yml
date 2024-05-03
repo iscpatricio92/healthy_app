@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  frontEnd:
+    container_name: healthy_app
+    image: healthy_app
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    stdin_open: true
+    tty: true
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/healthy_app
+      - /healthy_app/node_modules
+
+
