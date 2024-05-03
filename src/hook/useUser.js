@@ -1,6 +1,10 @@
-import { useQuery } from "react-query";
-import postLogin from "../data/users";
+import { useContext } from "react";
+import { UserContext } from "../contexts/profileContext";
 
-export const usePostLogin = () => {
-  return useQuery("usePostLogin", postLogin, { enabled: false });
+export const useProfile = () => {
+  const ctxProfile = useContext(UserContext);
+  if (ctxProfile === undefined) {
+    throw new Error("useProfile must be used within an UserContextProvider");
+  }
+  return ctxProfile;
 };
