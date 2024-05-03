@@ -3,6 +3,8 @@ const { createContext, useReducer } = require("react");
 const initialValue = {
   toggle: true,
   toggleNavbar: true,
+  user: {},
+  permissions: {},
 };
 
 export const Context = createContext();

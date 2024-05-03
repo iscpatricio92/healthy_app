@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext } from "../contexts/profileContext";
+import { UserContext } from "../context/profileContext";
 
 export const useProfile = () => {
   const ctxProfile = useContext(UserContext);

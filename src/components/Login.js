@@ -4,7 +4,7 @@ import Input from "./Input";
 import FormExtra from "./FormExtra";
 import FormAction from "./FormAction";
 
-import { useAuth } from "../contexts/authContext";
+import { useAuth } from "../context/authContext";
 
 const fields = loginFields;
 let fieldsState = {};
