@@ -4,7 +4,7 @@ import Sidebar from "../../components/Sidebar";
 import Header from "../../components/Header";
 import Loader from "../../common/Loader";
 import { useLocation } from "react-router-dom";
-import { UserProvider } from "../../context/profileContext";
+import UserProvider from "../../context/profile/profileProvider";
 
 function Layout({ element, ...props }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
