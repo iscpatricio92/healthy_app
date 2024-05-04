@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-import postLogin from "../data/auth";
-import api from "../api/index";
+import postLogin from "../../data/auth";
+import api from "../../api/index";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
