@@ -4,6 +4,8 @@ import Sidebar from "../../components/Sidebar";
 import Header from "../../components/Header";
 import Loader from "../../common/Loader";
 import { useLocation } from "react-router-dom";
+import UserProvider from "../../context/profile/profileProvider";
+
 function Layout({ element, ...props }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -22,7 +24,7 @@ function Layout({ element, ...props }) {
   return loading ? (
     <Loader />
   ) : (
-    <>
+    <UserProvider>
       <div className="bg-gray-200">
         {/* <!-- ===== Page Wrapper Start ===== --> */}
         <div className="flex h-screen overflow-hidden">
@@ -41,7 +43,7 @@ function Layout({ element, ...props }) {
           </div>
         </div>
       </div>
-    </>
+    </UserProvider>
   );
 }
 export default Layout;

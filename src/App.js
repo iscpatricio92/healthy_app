@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import RoutesComponent from "./routes";
-import { AuthProvider } from "./contexts/authContext";
+import { AuthProvider } from "./context/auth/authContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {

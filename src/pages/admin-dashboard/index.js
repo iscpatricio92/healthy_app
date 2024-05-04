@@ -1,29 +1,8 @@
-import { useEffect, useState } from "react";
-import { useAuth } from "../../contexts/authContext";
-import { getUserInfo } from "../../data/user";
+import { useProfile } from "../../hook/useUser";
 const DashboardPage = () => {
-  const { getToken, logout } = useAuth(null);
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const token = getToken();
-        const response = await getUserInfo(token);
-        setUser(response?.result);
-      } catch (e) {
-        console.error("Error al obtener información del usuario:", e);
-      }
-    };
-
-    fetchUser();
-  }, []);
-
+  const { user } = useProfile();
   return (
     <div className="flex flex-col">
-      <button className="bg-gray-500 h-3 " onClick={logout}>
-        Cerrar sesión
-      </button>
       {user ? (
         <div>
           <h2>Perfil de Usuario</h2>
