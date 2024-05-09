@@ -1,5 +1,5 @@
 import React from "react";
-import Paginate from "./Paginate";
+//import Paginate from "./Paginate";
 
 export const Table = ({ dataTable }) => {
   const { head, data, actions } = dataTable;

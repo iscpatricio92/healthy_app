@@ -1,4 +1,4 @@
-import NotFound from "../pages/NotFound";
+//import NotFound from "../pages/NotFound";
 import DashboardPage from "../pages/admin-dashboard";
 import LoginPage from "../pages/Login";
 import PrivateRoute from "./PrivateRoute";

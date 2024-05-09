@@ -11,7 +11,7 @@ const PrivateRoutes = ({ children }) => {
       navigate("/login");
     }
     return children;
-  }, [isLoggedIn, navigate]);
+  }, [isLoggedIn, navigate, children]);
 
   return <Outlet />;
 };
