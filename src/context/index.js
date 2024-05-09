@@ -8,6 +8,7 @@ const initialValue = {
 };
 
 export const Context = createContext();
+Context.displayName = "ThemeContext";
 
 const reducer = (state = initialValue, action) => {
   const { type, payload } = action;
