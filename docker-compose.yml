@@ -1,0 +1,25 @@
+services:
+  frontend:
+    container_name: healthy_app
+    image: healthy-app
+    build:
+      context: .
+      dockerfile: ./.docker/dev/Dockerfile
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    volumes:
+      - ".:/healthy_app"
+    command: >
+      bash -c "cp -rfu /cache/node_modules/. /healthy_app/node_modules/ && npm start"
+  test:
+    build:
+      context: .
+      dockerfile: ./.docker/dev/Dockerfile
+    volumes:
+      - .:/healthy_app
+    command: ["npm", "test"]
+
+

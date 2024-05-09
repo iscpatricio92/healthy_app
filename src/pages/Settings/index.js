@@ -71,7 +71,7 @@ export default function SettingsPage() {
           <div
             key={"tab_content" + tab[0]}
             className={
-              "bg-gray-50 py-4 rounded-lg dark:bg-gray-800 " +
+              "bg-gray-50 pb-4 rounded-lg dark:bg-gray-800 " +
               (_hash === tab[1].target ? "active" : "hidden")
             }
             id={tab[1].target}
