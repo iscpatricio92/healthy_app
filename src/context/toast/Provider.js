@@ -13,7 +13,7 @@ const ToastProvider = ({ children }) => {
     if (state.show) {
       timeOut = setTimeout(() => {
         setTimeout(() => {
-          //dispatch({ type: ActionTypes.HIDE_TOAST });
+          dispatch({ type: ActionTypes.HIDE_TOAST });
         }, 3000);
       });
     }

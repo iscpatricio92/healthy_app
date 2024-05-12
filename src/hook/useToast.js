@@ -11,10 +11,10 @@ export const useToast = () => {
       payload: { title, message, type },
     });
   };
-  const success = (title, message) => showToast(title, message, "success");
-  const error = (title, message) => showToast(title, message, "error");
-  const warning = (title, message) => showToast(title, message, "warning");
-  const info = (title, message) => showToast(title, message, "info");
+  const success = (message) => showToast("Success", message, "success");
+  const error = (message) => showToast("Error", message, "error");
+  const warning = (message) => showToast("Warning", message, "warning");
+  const info = (message) => showToast("Info", message, "info");
 
   return { showToast, success, error, warning, info };
 };

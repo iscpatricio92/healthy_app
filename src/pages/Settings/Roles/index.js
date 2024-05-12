@@ -35,20 +35,19 @@ export default function Roles() {
     e.preventDefault();
 
     try {
-      console.log("PAT", _formData);
       const { status, result, statusCode } = await updateRoles(
         token,
         _formData
       );
       if (status && result) {
-        toast.warning("Update", "¡Cambio realizado correctamente!");
+        toast.success("¡Cambio realizado correctamente!");
         getDataRoles();
         closeModal();
       } else {
-        console.log("ERROR", statusCode);
+        toast.warning(statusCode);
       }
     } catch (e) {
-      console.log("ERRORs", e);
+      toast.error(e);
     }
   };
   const handleFormChange = (formData) => {
@@ -77,7 +76,6 @@ export default function Roles() {
   //effects
   useEffect(() => {
     getDataRoles();
-    toast.error("Update", "¡Cambio realizado correctamente!");
   }, [token]);
 
   return (
