@@ -1,5 +1,5 @@
 import { CONNECTIONS } from "../../constants/config.js";
-import { getHeader, patchHeader } from "../base.js";
+import { getHeader, patchHeader, postHeader } from "../base.js";
 const { API_HEALTHY } = CONNECTIONS;
 const user = {
   getRoles(token) {
@@ -14,6 +14,13 @@ const user = {
     patchHeader.headers.authorization = `Bearer ${token}`;
     patchHeader.body = JSON.stringify(data);
     return fetch(url, patchHeader);
+  },
+  addRoles(token, data) {
+    //TODO add slash api on constants
+    const url = `${API_HEALTHY}/api/roles`;
+    postHeader.headers.authorization = `Bearer ${token}`;
+    postHeader.body = JSON.stringify(data);
+    return fetch(url, postHeader);
   },
 };
 export default user;
