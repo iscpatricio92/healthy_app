@@ -1,15 +1,11 @@
-import React from "react";
-import Paginate from "./Paginate";
-
 export const Table = ({ dataTable }) => {
   const { head, data, actions } = dataTable;
-  console.log(actions);
   return (
     <>
       <table className="w-full table-auto">
         <thead>
           <tr className="bg-gray-2 text-left dark:bg-meta-4">
-            {head.map((item) => (
+            {head?.map((item) => (
               <th
                 key={item}
                 className={`px-4 py-4 font-medium text-black dark:text-white ${
@@ -22,7 +18,8 @@ export const Table = ({ dataTable }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((rol) => (
+          {!data && <p className="text-center">No data</p>}
+          {data?.map((rol) => (
             <tr key={rol.id}>
               <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
                 <h5 className="font-medium text-black dark:text-white">
@@ -51,7 +48,7 @@ export const Table = ({ dataTable }) => {
                     className="hover:text-primary"
                     onClick={() => actions(rol)}
                   >
-                    Editar
+                    Edit
                   </button>
                 </div>
               </td>
