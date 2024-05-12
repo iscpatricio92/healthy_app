@@ -1,24 +1,71 @@
-import React, { useEffect, useRef, useState } from "react";
-import getRoles from "../../../data/roles";
+import React, { useEffect, useState } from "react";
+import { getRoles, updateRoles } from "../../../data/roles";
 import { useAuth } from "../../../context/auth/authContext";
 
 import { Table } from "../../../components/Table";
-import EditRol from "./edit.js";
+import EditRol from "./editRoles";
+
+import Modal from "../../../components/Modal/";
+import { useToast } from "../../../hook/useToast";
 
 export default function Roles() {
   const { getToken } = useAuth();
   const token = getToken();
+  const toast = useToast();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+  const [_formData, setFormData] = useState(null);
 
   //functions
-  const handleEdit = (rol) => {
-    setEditData(rol);
-    const modal = document.getElementById("modalEdit");
-    console.log("MODAL", modal);
-    //TODO HERE modal.style.display = "block";
+
+  const openModal = (content) => {
+    setModalContent(content);
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setModalContent(null);
+    setIsModalOpen(false);
   };
 
-  const handleConfirmEdit = () => {
-    console.log("SEND PATCH");
+  const handleEdit = (rol) => {
+    openModal(<EditRol data={rol} handleFormChange={handleFormChange} />);
+  };
+
+  const handleConfirmEdit = async (e) => {
+    e.preventDefault();
+
+    try {
+      console.log("PAT", _formData);
+      const { status, result, statusCode } = await updateRoles(
+        token,
+        _formData
+      );
+      if (status && result) {
+        toast.warning("Update", "¡Cambio realizado correctamente!");
+        getDataRoles();
+        closeModal();
+      } else {
+        console.log("ERROR", statusCode);
+      }
+    } catch (e) {
+      console.log("ERRORs", e);
+    }
+  };
+  const handleFormChange = (formData) => {
+    setFormData(formData);
+  };
+
+  const getDataRoles = async () => {
+    try {
+      const { status, result, statusCode } = await getRoles(token);
+      if (status && result) {
+        setDataTable({ ...dataTable, data: result });
+      } else {
+        console.log("ERROR", statusCode);
+      }
+    } catch (e) {
+      console.log("ERRORs", e);
+    }
   };
   //states
   const [dataTable, setDataTable] = useState({
@@ -26,32 +73,29 @@ export default function Roles() {
     data: [],
     actions: handleEdit,
   });
-  const [editData, setEditData] = useState(null);
 
   //effects
   useEffect(() => {
-    const getDataRoles = async () => {
-      try {
-        const { status, result, statusCode } = await getRoles(token);
-        if (status && result) {
-          setDataTable({ ...dataTable, data: result });
-        } else {
-          console.log("ERROR", statusCode);
-        }
-      } catch (e) {
-        console.log("ERRORs", e);
-      }
-    };
     getDataRoles();
+    toast.error("Update", "¡Cambio realizado correctamente!");
   }, [token]);
 
   return (
-    <>
-      <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-        <div className="max-w-full overflow-x-auto"></div>
-        <Table dataTable={dataTable} />
-        {/*<EditRol editData={editData} />*/}
+    <div className="max-w-full overflow-x-auto">
+      <div className="relative h-14 w-full">
+        <button className="absolute top-0 right-0 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
+          Add new
+        </button>
       </div>
-    </>
+      <Table dataTable={dataTable} />
+      <Modal
+        isOpen={isModalOpen}
+        title="Edit Rol"
+        onClose={closeModal}
+        handleSubmit={handleConfirmEdit}
+      >
+        {modalContent}
+      </Modal>
+    </div>
   );
 }

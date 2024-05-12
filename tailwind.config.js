@@ -239,6 +239,26 @@ module.exports = {
           "0%, 100%": { transform: "rotate(360deg)" },
           "50%": { transform: "rotate(0deg)" },
         },
+        "slide-in": {
+          from: {
+            transform: "translateY(100%)",
+            opacity: 0,
+          },
+          to: {
+            transform: "translateY(0)",
+            opacity: 1,
+          },
+        },
+        "slide-out": {
+          from: {
+            transform: "translateY(0)",
+            opacity: 1,
+          },
+          to: {
+            transform: "translateY(100%)",
+            opacity: 0,
+          },
+        },
       },
       animation: {
         "ping-once": "ping 5s cubic-bezier(0, 0, 0.2, 1)",
@@ -246,6 +266,8 @@ module.exports = {
         "spin-1.5": "spin 1.5s linear infinite",
         "spin-2": "spin 2s linear infinite",
         "spin-3": "spin 3s linear infinite",
+        "slide-in": "slide-in 0.5s ease-out",
+        "slide-out": "slide-out 0.5s ease-in",
       },
     },
   },
