@@ -9,6 +9,7 @@ export const ENV = NODE_ENV;
 export const CONNECTIONS = {
   API_HEALTHY: REACT_APP_HEALTHY,
   APP: REACT_APP_HEALTHY_APP,
+  PREFIX: "/api",
 };
 
 export const TOKENS = {
