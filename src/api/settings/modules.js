@@ -3,20 +3,17 @@ import { getHeader, patchHeader, postHeader } from "../base.js";
 const { API_HEALTHY, PREFIX } = CONNECTIONS;
 const modules = {
   getModules(token) {
-    //TODO add slash api on constants
     const url = `${API_HEALTHY}${PREFIX}/modules`;
     getHeader.headers.authorization = `Bearer ${token}`;
     return fetch(url, getHeader);
   },
   updateModules(token, data) {
-    //TODO add slash api on constants
     const url = `${API_HEALTHY}${PREFIX}/modules/${data.id}`;
     patchHeader.headers.authorization = `Bearer ${token}`;
     patchHeader.body = JSON.stringify(data);
     return fetch(url, patchHeader);
   },
   addModules(token, data) {
-    //TODO add slash api on constants
     const url = `${API_HEALTHY}${PREFIX}/modules`;
     postHeader.headers.authorization = `Bearer ${token}`;
     postHeader.body = JSON.stringify(data);
