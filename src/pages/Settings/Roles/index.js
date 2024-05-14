@@ -48,9 +48,8 @@ export default function Roles() {
 
   const handleConfirmAdd = async (e) => {
     e.preventDefault();
-    console.log("ADD", _formData);
     try {
-      const { status, result, statusCode } = await addRoles(token, _formData);
+      const { status, result } = await addRoles(token, _formData);
       if (status && result) {
         toast.success("¡Agregado correctamente!");
         getDataRoles();

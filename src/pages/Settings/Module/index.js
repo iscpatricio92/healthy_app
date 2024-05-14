@@ -47,9 +47,8 @@ const Modules = () => {
 
   const handleConfirmAdd = async (e) => {
     e.preventDefault();
-    console.log("ADD", _formData);
     try {
-      const { status, result, statusCode } = await addModules(token, _formData);
+      const { status, result } = await addModules(token, _formData);
       if (status && result) {
         toast.success("¡Agregado correctamente!");
         getDataModules();
@@ -66,16 +65,13 @@ const Modules = () => {
     e.preventDefault();
 
     try {
-      const { status, result, statusCode } = await updateModules(
-        token,
-        _formData
-      );
+      const { status, result } = await updateModules(token, _formData);
       if (status && result) {
         toast.success("¡Cambio realizado correctamente!");
         getDataModules();
         closeModal();
       } else {
-        toast.warning(statusCode);
+        toast.warning(result?.response?.message);
       }
     } catch (e) {
       toast.error(e);
