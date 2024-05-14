@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../../context/auth/authContext";
 import { useToast } from "../../../hook/useToast";
 import { Table } from "../../../components/Table";
-
+import EditModule from "./editModules";
+import AddModule from "./addModules";
 import { getModules, updateModules, addModules } from "../../../data/modules";
 import Modal from "../../../components/Modal";
 
@@ -34,13 +35,14 @@ const Modules = () => {
   };
 
   const handleEdit = (module) => {
-    openModal();
-    //<EditModule data={module} handleFormChange={handleFormChange} />,
-    //"EDIT"
+    openModal(
+      <EditModule data={module} handleFormChange={handleFormChange} />,
+      "EDIT"
+    );
   };
 
   const handleAddModule = () => {
-    //openModal(<AddModule handleFormChange={handleFormChange} />, "ADD");
+    openModal(<AddModule handleFormChange={handleFormChange} />, "ADD");
   };
 
   const handleConfirmAdd = async (e) => {
@@ -98,7 +100,7 @@ const Modules = () => {
   };
 
   const [dataTable, setDataTable] = useState({
-    head: ["Module", "Created", "Status", "Actions"],
+    head: ["Module", "Created", "Status", "Path", "Actions"],
     data: [],
     actions: handleEdit,
   });
