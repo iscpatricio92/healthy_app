@@ -1,7 +1,7 @@
 import { CONNECTIONS } from "../../constants/config.js";
 import { getHeader, patchHeader, postHeader } from "../base.js";
 const { API_HEALTHY, PREFIX } = CONNECTIONS;
-const user = {
+const roles = {
   getRoles(token) {
     //TODO add slash api on constants
     const url = `${API_HEALTHY}${PREFIX}/roles`;
@@ -23,4 +23,4 @@ const user = {
     return fetch(url, postHeader);
   },
 };
-export default user;
+export default roles;
