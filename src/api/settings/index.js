@@ -1,2 +1,4 @@
 import roles from "./roles";
-export default { roles };
+import modules from "./modules";
+const settings = { roles, modules };
+export default settings;
