@@ -1,7 +1,8 @@
 import users from "./users";
-import roles from "./settings";
-export default {
+import settings from "./settings";
+const api = {
   key: "healthyToken",
   ...users,
-  ...roles,
+  ...settings,
 };
+export default api;

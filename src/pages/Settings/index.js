@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Roles from "./Roles";
-import Modules from "./Modules";
+import Modules from "./Module";
 
 export default function SettingsPage() {
   const { hash } = useLocation();
@@ -20,6 +20,7 @@ export default function SettingsPage() {
     }
   };
 
+  //TODO only get the element when is active, today get all tabs including content
   const tabs = {
     Roles: {
       id: "profile-tab",
@@ -40,7 +41,7 @@ export default function SettingsPage() {
     <div>
       <div>
         <ul
-          className="tabs flex flex-col sm:flex-row"
+          className="tabs flex flex-col sm:flex-row "
           id="myTab"
           data-tabs-toggle="#myTabContent"
           role="tablist"
@@ -48,11 +49,11 @@ export default function SettingsPage() {
           {Object.entries(tabs).map((tab) => (
             <li className="mr-2" role="presentation" key={tab[0]}>
               <button
-                className={`${
+                className={`  rounded-sm  ${
                   _hash === tab[1].target
-                    ? "active border-b-2 border-purple-500 bg-white"
+                    ? "active border-b-2 border-b-purple-500 border-stroke bg-white dark:text-white  dark:border-strokedar dark:bg-boxdark"
                     : ""
-                }  tab text-gray-600 py-2 px-6 block hover:text-purple-500`}
+                }  tab py-2 px-6 block hover:text-purple-500`}
                 id={`${tab[1].id}`}
                 data-tabs-target={`${tab[1].target}`}
                 type="button"

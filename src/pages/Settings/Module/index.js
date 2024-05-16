@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { addRoles, getRoles, updateRoles } from "../../../data/roles";
 import { useAuth } from "../../../context/auth/authContext";
-
-import { Table } from "../../../components/Table";
-import EditRol from "./editRoles";
-
-import Modal from "../../../components/Modal/";
 import { useToast } from "../../../hook/useToast";
-import AddRol from "./addRoles";
+import { Table } from "../../../components/Table";
+import EditModule from "./editModules";
+import AddModule from "./addModules";
+import { getModules, updateModules, addModules } from "../../../data/modules";
+import Modal from "../../../components/Modal";
 
-export default function Roles() {
+const Modules = () => {
   const { getToken } = useAuth();
   const token = getToken();
   const toast = useToast();
@@ -19,7 +17,6 @@ export default function Roles() {
   const [_formData, setFormData] = useState(null);
 
   //functions
-
   const openModal = (content, type) => {
     if (type === "EDIT") {
       setModalContent(content);
@@ -30,29 +27,31 @@ export default function Roles() {
       setIsAddModalOpen(true);
     }
   };
+
   const closeModal = () => {
     setModalContent(null);
     setIsModalOpen(false);
     setIsAddModalOpen(false);
   };
 
-  const handleEdit = (rol) => {
+  const handleEdit = (module) => {
     openModal(
-      <EditRol data={rol} handleFormChange={handleFormChange} />,
+      <EditModule data={module} handleFormChange={handleFormChange} />,
       "EDIT"
     );
   };
-  const handleAddRol = () => {
-    openModal(<AddRol handleFormChange={handleFormChange} />, "ADD");
+
+  const handleAddModule = () => {
+    openModal(<AddModule handleFormChange={handleFormChange} />, "ADD");
   };
 
   const handleConfirmAdd = async (e) => {
     e.preventDefault();
     try {
-      const { status, result } = await addRoles(token, _formData);
+      const { status, result } = await addModules(token, _formData);
       if (status && result) {
         toast.success("¡Agregado correctamente!");
-        getDataRoles();
+        getDataModules();
         closeModal();
       } else {
         toast.warning(result?.response?.message);
@@ -61,20 +60,18 @@ export default function Roles() {
       toast.error(e?.message);
     }
   };
+
   const handleConfirmEdit = async (e) => {
     e.preventDefault();
 
     try {
-      const { status, result, statusCode } = await updateRoles(
-        token,
-        _formData
-      );
+      const { status, result } = await updateModules(token, _formData);
       if (status && result) {
         toast.success("¡Cambio realizado correctamente!");
-        getDataRoles();
+        getDataModules();
         closeModal();
       } else {
-        toast.warning(statusCode);
+        toast.warning(result?.response?.message);
       }
     } catch (e) {
       toast.error(e);
@@ -85,9 +82,9 @@ export default function Roles() {
     setFormData(formData);
   };
 
-  const getDataRoles = async () => {
+  const getDataModules = async () => {
     try {
-      const { status, result, statusCode } = await getRoles(token);
+      const { status, result, statusCode } = await getModules(token);
       if (status && result) {
         setDataTable({ ...dataTable, data: result });
       } else {
@@ -97,16 +94,15 @@ export default function Roles() {
       console.error("error", e);
     }
   };
-  //states
+
   const [dataTable, setDataTable] = useState({
-    head: ["Rol", "Created", "Status", "Actions"],
+    head: ["Module", "Created", "Status", "Path", "Actions"],
     data: [],
     actions: handleEdit,
   });
-
   //effects
   useEffect(() => {
-    getDataRoles();
+    getDataModules();
   }, [token]);
 
   return (
@@ -114,7 +110,7 @@ export default function Roles() {
       <div className="relative h-14 w-full">
         <button
           className="absolute top-0 right-0 bg-primary hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-          onClick={handleAddRol}
+          onClick={handleAddModule}
         >
           Add new
         </button>
@@ -122,7 +118,7 @@ export default function Roles() {
       <Table dataTable={dataTable} />
       <Modal
         isOpen={isModalOpen}
-        title="Edit Rol"
+        title="Edit Module"
         onClose={closeModal}
         handleSubmit={handleConfirmEdit}
       >
@@ -130,7 +126,7 @@ export default function Roles() {
       </Modal>
       <Modal
         isOpen={isModalAddOpen}
-        title="Add Rol"
+        title="Add Module"
         onClose={closeModal}
         handleSubmit={handleConfirmAdd}
       >
@@ -138,4 +134,6 @@ export default function Roles() {
       </Modal>
     </div>
   );
-}
+};
+
+export default Modules;

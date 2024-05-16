@@ -1,9 +1,9 @@
 import { CONNECTIONS } from "../../constants/config.js";
 import { getHeader } from "../base.js";
-const { API_HEALTHY } = CONNECTIONS;
+const { API_HEALTHY, PREFIX } = CONNECTIONS;
 const user = {
   userInfo(token) {
-    const url = `${API_HEALTHY}/api/auth/profile/`;
+    const url = `${API_HEALTHY}${PREFIX}/auth/profile/`;
     getHeader.headers.authorization = `Bearer ${token}`;
     return fetch(url, getHeader);
   },
