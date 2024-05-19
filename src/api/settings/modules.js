@@ -19,5 +19,11 @@ const modules = {
     postHeader.body = JSON.stringify(data);
     return fetch(url, postHeader);
   },
+
+  getModulesByRol(token, rol) {
+    const url = `${API_HEALTHY}${PREFIX}/operations-module/${rol}`;
+    getHeader.headers.authorization = `Bearer ${token}`;
+    return fetch(url, getHeader);
+  },
 };
 export default modules;

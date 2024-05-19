@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Roles from "./Roles";
 import Modules from "./Module";
+import OperationModule from "./OperationModule";
 
 export default function SettingsPage() {
   const { hash } = useLocation();
@@ -33,8 +34,9 @@ export default function SettingsPage() {
       element: <Modules />,
     },
     Other: {
-      id: "others-tab",
-      target: "#others",
+      target: "#operation-module",
+      id: "operationModule-tab",
+      element: <OperationModule />,
     },
   };
   return (
